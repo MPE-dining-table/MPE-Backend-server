@@ -2,6 +2,7 @@ import express from "express";
 import { verifyToken } from "../middleware/authMiddlware.js";
 import { authorizeRole } from "../middleware/roleMiddlware.js";
 import { addAdmin, deleteAdmin } from "../controllers/superAdminActions.js";
+import { addRestuarent } from "../controllers/adminActions.js";
 
 const route = express.Router();
 
@@ -21,9 +22,7 @@ route.delete(
 );
 
 //only admin can access these route
-route.get("/admin", verifyToken, authorizeRole("admin"), (req, res) => {
-  res.json({ message: "welcome admin" });
-});
+route.post("/add-restuarent", verifyToken, authorizeRole("admin"), addRestuarent);
 
 //all can access these route
 route.get("/user", verifyToken, (req, res) => {

@@ -19,8 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 //auth routes
 app.use("/api/auth", authRoutes);
 
-//super admin routes
-app.use("/api/super-admin", userRoutes);
+//super admin and admin routes
+app.use("/api/actions", userRoutes);
+
 
 app.listen(PORT, () =>
   console.log(`server listening on http://localhost:${PORT}`)

@@ -18,7 +18,7 @@ export const register = async (req, res) => {
       role,
     });
 
-    console.log(newUser);
+    // console.log(newUser);
 
     await newUser.save();
     res.status(201).json({ message: `User registered with username ${email}` });
@@ -53,6 +53,7 @@ export const login = async (req, res) => {
       expiresIn: "2h",
     });
 
+    console.log(token);
     res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({
@@ -82,6 +83,7 @@ export const adminLogin = async (req, res) => {
       expiresIn: "2h",
     });
 
+    console.log(token)
     res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({
