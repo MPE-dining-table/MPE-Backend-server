@@ -2,7 +2,13 @@ import express from "express";
 import { verifyToken } from "../middleware/authMiddlware.js";
 import { authorizeRole } from "../middleware/roleMiddlware.js";
 import { addAdmin, deleteAdmin } from "../controllers/superAdminActions.js";
-import { addRestuarent } from "../controllers/adminActions.js";
+import {
+  addRestuarent,
+  deleteRestuarent,
+  getRestuarants,
+  getRestuarentById,
+  updateRestuarent,
+} from "../controllers/adminActions.js";
 
 const route = express.Router();
 
@@ -21,12 +27,30 @@ route.delete(
   deleteAdmin
 );
 
+route.delete(
+  "/delete-restuarent/:id",
+  verifyToken,
+  authorizeRole("super-admin"),
+  deleteRestuarent
+);
+
 //only admin can access these route
-route.post("/add-restuarent", verifyToken, authorizeRole("admin"), addRestuarent);
+route.post(
+  "/add-restuarent",
+  verifyToken,
+  authorizeRole("admin"),
+  addRestuarent
+);
+
+route.put(
+  "/update-restuarent/:id",
+  verifyToken,
+  authorizeRole("admin"),
+  updateRestuarent
+);
 
 //all can access these route
-route.get("/user", verifyToken, (req, res) => {
-  res.json({ message: "welcome user" });
-});
+route.get("/fetch-restuarents", getRestuarants);
+route.get("/fetch-restuarent/:id", getRestuarentById);
 
 export default route;
