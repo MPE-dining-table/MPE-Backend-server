@@ -16,8 +16,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//auth routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+
+//super admin routes
+app.use("/api/super-admin", userRoutes);
 
 app.listen(PORT, () =>
   console.log(`server listening on http://localhost:${PORT}`)
