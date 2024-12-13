@@ -54,7 +54,15 @@ export const login = async (req, res) => {
     });
 
     console.log(token);
-    res.status(200).json({ token });
+    // res.status(200).json({ token });
+    res.status(200).json({
+      token: token,
+      message: "Logged in successfully",
+      user: {
+        ...user._doc,
+        password: undefined,
+      },
+    });
   } catch (error) {
     res.status(500).json({
       message: `An error occurred while trying to log in: ${error}`,
@@ -83,7 +91,7 @@ export const adminLogin = async (req, res) => {
       expiresIn: "2h",
     });
 
-    console.log(token)
+    console.log(token);
     res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({
