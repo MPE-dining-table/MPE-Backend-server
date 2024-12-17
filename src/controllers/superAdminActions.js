@@ -45,3 +45,19 @@ export const deleteAdmin = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const getAdmins = async (req, res) => {
+  try {
+    const { page = 1, limit = 5 } = req.query;
+    const skip = (page - 1) * limit;
+
+    const admins = await Admin.find({ role: "admin" }).skip(skip).limit(limit);
+
+    const totalAdmins = await Admin.countDocuments({ role: "admin" });
+
+    res.status(200).json({ admins, totalAdmins, page, limit });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to fetch admins" });
+  }
+};
