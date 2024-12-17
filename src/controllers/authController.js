@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import secreteKey from "../config/jwtConfig.js";
+import { tokenBlacklist } from "../utils/usedTokens.js";
 export const register = async (req, res) => {
   try {
     const { firstName, lastName, email, cellphone, password, role } = req.body;
@@ -70,6 +71,23 @@ export const login = async (req, res) => {
   }
 };
 
+export const logout = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    tokenBlacklist.push(token);
+
+    res.status(200).json({ message: "User logged out successfully" });
+  } catch (error) {
+    res.status(500).json({
+      message: `An error occurred while trying to log out: ${error}`,
+    });
+  }
+};
+
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -91,8 +109,16 @@ export const adminLogin = async (req, res) => {
       expiresIn: "2h",
     });
 
-    console.log(token);
-    res.status(200).json({ token });
+    // console.log(token);
+    // res.status(200).json({ token });
+    res.status(200).json({
+      token: token,
+      message: "Logged in successfully",
+      user: {
+        ...user._doc,
+        password: undefined,
+      },
+    });
   } catch (error) {
     res.status(500).json({
       message: `An error occurred while trying to log in: ${error}`,

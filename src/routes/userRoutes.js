@@ -1,7 +1,7 @@
 import express from "express";
 import { verifyToken } from "../middleware/authMiddlware.js";
 import { authorizeRole } from "../middleware/roleMiddlware.js";
-import { addAdmin, deleteAdmin } from "../controllers/superAdminActions.js";
+import { addAdmin, deleteAdmin, getAdmins } from "../controllers/superAdminActions.js";
 import {
   addRestuarent,
   deleteRestuarent,
@@ -18,6 +18,13 @@ route.post(
   verifyToken,
   authorizeRole("super-admin"),
   addAdmin
+);
+
+route.get(
+  "/get-admins",
+  verifyToken,
+  authorizeRole("super-admin"),
+  getAdmins
 );
 
 route.delete(
