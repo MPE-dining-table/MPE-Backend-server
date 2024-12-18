@@ -9,6 +9,7 @@ import {
   getRestuarentById,
   updateRestuarent,
 } from "../controllers/adminActions.js";
+import upload from "../middleware/upload.js";
 
 const route = express.Router();
 
@@ -46,6 +47,7 @@ route.post(
   "/add-restuarent",
   verifyToken,
   authorizeRole("admin"),
+  upload.single("image"),
   addRestuarent
 );
 
