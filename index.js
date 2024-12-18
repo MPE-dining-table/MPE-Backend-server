@@ -12,9 +12,8 @@ const app = express();
 const PORT = 4000;
 
 app.use(bodyParser.json());
-app.use(cors({
-  origin: "http://localhost:8081",
-}));app.use(express.json());
+app.use(cors());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //auth routes
@@ -24,7 +23,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/actions", userRoutes);
 
 
-app.listen(4000, "0.0.0.0", () => {
-  console.log("Server running on port 4000");
-});
-
+app.listen(PORT, () =>
+  console.log(`server listening on http://localhost:${PORT}`)
+);
