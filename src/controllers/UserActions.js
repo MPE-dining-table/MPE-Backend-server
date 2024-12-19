@@ -1,6 +1,6 @@
-import BookingModel from "../models/BookingModel";
+import BookingModel from "../models/BookingModel.js";
 
-export default booking = async (req, res) => {
+export const booking = async (req, res) => {
   try {
     const bookingData = req.body;
 
