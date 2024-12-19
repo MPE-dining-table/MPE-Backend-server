@@ -46,18 +46,15 @@ export const addRestuarent = async (req, res) => {
 
 export const getRestuarants = async (req, res) => {
   try {
-    const { page = 1, limit = 5 } = req.query;
-    const skip = (page - 1) * limit;
-    const restuarents = await Restuarent.find().skip(skip).limit(limit);
+    const restuarents = await Restuarent.find(); 
 
-    // const totalRestuarents = await Restuarent.countDocuments();
-
-    res.status(200).json({ restuarents, page, limit });
+    res.status(200).json({ restuarents });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "failed to fetch restuarents" });
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch restaurants" });
   }
 };
+
 
 export const deleteRestuarent = async (req, res) => {
   try {
