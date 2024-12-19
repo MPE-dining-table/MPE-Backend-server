@@ -9,7 +9,7 @@ import {
   getRestuarentById,
   updateRestuarent,
 } from "../controllers/adminActions.js";
-import {booking} from "../controllers/UserActions.js"
+import {booking, deleteBooking, fetchBooking, updateBooking} from "../controllers/UserActions.js"
 
 const route = express.Router();
 
@@ -63,5 +63,11 @@ route.get("/fetch-restuarent/:id", getRestuarentById);
 
 //users can access these routes
 route.post("/booking",verifyToken, booking)
+route.get("/bookings",verifyToken, fetchBooking)
+route.put("/booking/:id",verifyToken, updateBooking)
+route.delete("/booking/:id",verifyToken, deleteBooking)
+
+
+
 
 export default route;
