@@ -16,7 +16,7 @@ export const addRestuarent = async (req, res) => {
       return res.status(400).json({ message: "Image is required" });
     }
 
-    const adminId = req.user._id; // Assuming admin's ID is available from auth middleware
+    const adminId = req.user._id; 
 
     const newRes = new Restuarent({
       restuarentName,
@@ -50,9 +50,9 @@ export const getRestuarants = async (req, res) => {
     const skip = (page - 1) * limit;
     const restuarents = await Restuarent.find().skip(skip).limit(limit);
 
-    const totalRestuarents = await Restuarent.countDocuments();
+    // const totalRestuarents = await Restuarent.countDocuments();
 
-    res.status(200).json({ restuarents, totalRestuarents, page, limit });
+    res.status(200).json({ restuarents, page, limit });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "failed to fetch restuarents" });
