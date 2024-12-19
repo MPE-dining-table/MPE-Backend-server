@@ -9,7 +9,7 @@ import {
   getRestuarentById,
   updateRestuarent,
 } from "../controllers/adminActions.js";
-import upload from "../middleware/upload.js";
+import {booking} from "../controllers/UserActions.js"
 
 const route = express.Router();
 
@@ -47,7 +47,6 @@ route.post(
   "/add-restuarent",
   verifyToken,
   authorizeRole("admin"),
-  upload.single("image"),
   addRestuarent
 );
 
@@ -61,5 +60,8 @@ route.put(
 //all can access these route
 route.get("/fetch-restuarents", getRestuarants);
 route.get("/fetch-restuarent/:id", getRestuarentById);
+
+//users can access these routes
+route.post("/booking",verifyToken, booking)
 
 export default route;
