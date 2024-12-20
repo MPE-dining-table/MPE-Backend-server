@@ -11,8 +11,9 @@ import {
 import {
   addRestuarent,
   deleteRestuarent,
+  getBookings,
   getRestuarants,
-  getRestuarentById,
+  getRestuarentByAdmin,
   updateRestuarent,
 } from "../controllers/adminActions.js";
 import {
@@ -70,9 +71,12 @@ route.put(
   updateRestuarent
 );
 
+route.get("/fetch-restuarent", verifyToken, getRestuarentByAdmin);
+
+route.get("/fetch-bookings", verifyToken, getBookings);
+
 //all can access these route
 route.get("/fetch-restuarents", getRestuarants);
-route.get("/fetch-restuarent/:id", getRestuarentById);
 
 //users can access these routes
 route.post("/booking", verifyToken, booking);
