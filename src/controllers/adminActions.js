@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Restuarent from "../models/restaurentModel.js";
 
 export const addRestuarent = async (req, res) => {
