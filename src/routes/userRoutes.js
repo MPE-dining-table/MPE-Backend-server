@@ -9,7 +9,7 @@ import {
   getRestuarentById,
   updateRestuarent,
 } from "../controllers/adminActions.js";
-import {booking, deleteBooking, fetchBooking, updateBooking} from "../controllers/UserActions.js"
+import {addFavorites, booking, deleteBooking, fetchBooking, fetchFavorites, updateBooking, updateProfile} from "../controllers/UserActions.js"
 
 const route = express.Router();
 
@@ -67,6 +67,10 @@ route.get("/bookings",verifyToken, fetchBooking)
 route.put("/booking/:id",verifyToken, updateBooking)
 route.delete("/booking/:id",verifyToken, deleteBooking)
 
+route.put("/profile",verifyToken, updateProfile)
+
+route.post("/add-favorites",verifyToken, addFavorites)
+route.get("/fetch-favorites", verifyToken, fetchFavorites);
 
 
 
