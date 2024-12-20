@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 import secreteKey from "../config/jwtConfig.js";
 import mongoose from "mongoose";
+import UserModel from "../models/userModel.js";
 
 export const addAdmin = async (req, res) => {
   try {
@@ -33,7 +34,7 @@ export const addAdmin = async (req, res) => {
 export const deleteAdmin = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: "Invalid recipe ID format" });
+      return res.status(400).json({ error: "Invalid admin ID format" });
     }
     const deletedAdmin = await Admin.findByIdAndDelete(req.params.id);
     if (!deletedAdmin) {
@@ -59,5 +60,32 @@ export const getAdmins = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to fetch admins" });
+  }
+};
+
+export const getUsers = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+
+    res.status(200).json({ users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Invalid user ID format" });
+    }
+    const deletedUser = await UserModel.findByIdAndDelete(req.params.id);
+    if (!deletedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ message: "User successfully deleted" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
