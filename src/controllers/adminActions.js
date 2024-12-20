@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Restuarent from "../models/restaurentModel.js";
+import BookingModel from "../models/BookingModel.js";
 
 export const addRestuarent = async (req, res) => {
   try {
@@ -17,26 +18,24 @@ export const addRestuarent = async (req, res) => {
       return res.status(400).json({ message: "Image is required" });
     }
 
-    const adminId = req.user._id; 
+    const adminId = req.user._id;
 
     const newRes = new Restuarent({
       restuarentName,
       address,
       cuisine,
       about,
-      images: req.file.path, 
+      images: req.file.path,
       openingTime,
       closingTime,
-      adminId, 
+      adminId,
     });
 
     await newRes.save();
-    res
-      .status(201)
-      .json({
-        message: `New restaurant added successfully!`,
-        restaurant: newRes,
-      });
+    res.status(201).json({
+      message: `New restaurant added successfully!`,
+      restaurant: newRes,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -47,7 +46,7 @@ export const addRestuarent = async (req, res) => {
 
 export const getRestuarants = async (req, res) => {
   try {
-    const restuarents = await Restuarent.find(); 
+    const restuarents = await Restuarent.find();
 
     res.status(200).json({ restuarents });
   } catch (error) {
@@ -55,7 +54,6 @@ export const getRestuarants = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch restaurants" });
   }
 };
-
 
 export const deleteRestuarent = async (req, res) => {
   try {
@@ -88,18 +86,35 @@ export const updateRestuarent = async (req, res) => {
   }
 };
 
-export const getRestuarentById = async (req, res) => {
+export const getRestuarentByAdmin = async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ error: "Invalid Restuarent ID format" });
+    const adminId = req.user.id;
+    if (!mongoose.Types.ObjectId.isValid(adminId)) {
+      return res.status(400).json({ error: "Invalid Admin ID format" });
     }
-    const restuarent = await Restuarent.findById(req.params.id);
-    if (!restuarent) {
-      return res.status(404).json({ error: "Restuarent not found" });
+    
+    const restaurants = await Restuarent.find({ 
+      adminId: adminId.toString() 
+    });
+
+    if (restaurants.length === 0) {
+      return res.status(404).json({ error: "No restaurants found for this admin" });
     }
-    res.status(200).json(restuarent);
+
+    res.status(200).json(restaurants);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getBookings = async (req, res) => {
+  try {
+    const bookings = await BookingModel.find();
+
+    res.status(200).json({ bookings });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch bookings" });
   }
 };

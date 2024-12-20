@@ -10,8 +10,7 @@ const restaurantSchema = new mongoose.Schema(
     openingTime: { type: String, required: true },
     closingTime: { type: String, required: true },
     adminId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
   },
